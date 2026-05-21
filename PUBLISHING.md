@@ -180,8 +180,8 @@ The workflow in `.github/workflows/publish.yml` publishes automatically when a v
 Example tag:
 
 ```bash
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.2
+git push origin v0.2.2
 ```
 
 Before using the workflow:
