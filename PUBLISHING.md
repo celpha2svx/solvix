@@ -172,7 +172,7 @@ curl -fsSL https://github.com/celpha2svx/solvix/releases/latest/download/install
 You can pin a version with:
 
 ```bash
-curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.2.6/install.sh | SOLVIX_VERSION=v0.2.6 sh
+curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.2.7/install.sh | SOLVIX_VERSION=v0.2.7 sh
 ```
 
 ## Publish to Homebrew
@@ -227,8 +227,8 @@ The workflow in `.github/workflows/publish.yml` publishes automatically when a v
 Example tag:
 
 ```bash
-git tag v0.2.6
-git push origin v0.2.6
+git tag v0.2.7
+git push origin v0.2.7
 ```
 
 Before using the workflows:

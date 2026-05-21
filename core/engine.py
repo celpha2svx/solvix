@@ -39,6 +39,12 @@ ADAPTERS = {
     "kotlin": KotlinAdapter(),
 }
 
+PROJECT_SKIP_MESSAGES = (
+    "No functions found in",
+    " is empty. Nothing to analyze.",
+    "This file appears to be binary.",
+)
+
 
 class AnalysisError(Exception):
     """Raised when analysis fails in a user-visible way."""
@@ -67,7 +73,25 @@ def _analyze_project(target: Path, forced_language: str | None) -> ProjectReport
     if not files:
         raise AnalysisError(f"Solvix: No supported source files found in {target}. Supported: {supported_extensions()}")
 
-    file_reports = [_analyze_file(path, None, forced_language) for path in files]
+    file_reports: list[FileReport] = []
+    skipped_files = 0
+    for path in files:
+        try:
+            report = _analyze_file(path, None, forced_language)
+        except AnalysisError as exc:
+            message = str(exc)
+            if any(fragment in message for fragment in PROJECT_SKIP_MESSAGES):
+                skipped_files += 1
+                continue
+            raise
+        file_reports.append(report)
+
+    if not file_reports:
+        if skipped_files:
+            raise AnalysisError(
+                "Solvix: Supported source files were found, but none contained analyzable functions."
+            )
+        raise AnalysisError(f"Solvix: No supported source files found in {target}. Supported: {supported_extensions()}")
     top_functions = sorted(
         (
             {

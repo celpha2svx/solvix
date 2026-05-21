@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="solvix",
-    version="0.2.6",
+    version="0.2.7",
     description="Computational intelligence layer for developers",
     author="Solvix Contributors",
     author_email="maintainers@solvix.dev",

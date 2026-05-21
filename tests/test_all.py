@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import unittest
@@ -18,6 +19,14 @@ PYTHON = sys.executable
 
 
 class SolvixTests(unittest.TestCase):
+    def _scratch_dir(self, name: str) -> Path:
+        path = ROOT / "tests" / "artifacts" / name
+        if path.exists():
+            shutil.rmtree(path)
+        path.mkdir(parents=True, exist_ok=True)
+        self.addCleanup(lambda: shutil.rmtree(path, ignore_errors=True))
+        return path
+
     def test_python_sample_labels(self) -> None:
         report = _analyze_file(SAMPLES / "sample.py", None, None)
         labels = {function.name: function.context.adjusted_label for function in report.functions}
@@ -50,6 +59,26 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(SAMPLES, None)
         self.assertGreaterEqual(report.summary.total_functions, 12)
 
+    def test_project_mode_skips_files_without_functions(self) -> None:
+        temp_dir = self._scratch_dir("project_skip_case")
+        no_functions = temp_dir / "contracts.py"
+        has_functions = temp_dir / "worker.py"
+        empty_module = temp_dir / "__init__.py"
+        no_functions.write_text("NAME = 'solvix'\nVERSION = '1.0'\n", encoding="utf-8")
+        has_functions.write_text(
+            "def run_task(items):\n"
+            "    total = 0\n"
+            "    for item in items:\n"
+            "        total += item\n"
+            "    return total\n",
+            encoding="utf-8",
+        )
+        empty_module.write_text("", encoding="utf-8")
+
+        report = _analyze_project(temp_dir, None)
+        self.assertEqual(report.summary.files_analyzed, 1)
+        self.assertEqual(report.summary.total_functions, 1)
+
     def test_json_output(self) -> None:
         report = _analyze_file(SAMPLES / "sample.py", None, None)
         payload = format_json_report(report)
@@ -64,8 +93,7 @@ class SolvixTests(unittest.TestCase):
         self.assertGreaterEqual(len(report.next_steps), 1)
 
     def test_output_json_file(self) -> None:
-        output_path = ROOT / "tests" / "artifacts" / "report.json"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path = self._scratch_dir("output_json_file") / "report.json"
         result = subprocess.run(
             [
                 str(PYTHON),
@@ -86,8 +114,7 @@ class SolvixTests(unittest.TestCase):
         self.assertEqual(payload["language"], "python")
 
     def test_output_text_file(self) -> None:
-        output_path = ROOT / "tests" / "artifacts" / "report.txt"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path = self._scratch_dir("output_text_file") / "report.txt"
         result = subprocess.run(
             [
                 str(PYTHON),
@@ -110,6 +137,25 @@ class SolvixTests(unittest.TestCase):
         self.assertIn("Function : concat_function", text)
         self.assertIn("Cost     : MODERATE", text)
         self.assertIn("String Concatenation In Loop", text)
+
+    def test_output_directory_error_is_user_friendly(self) -> None:
+        output_path = ROOT / "tests" / "artifacts"
+        result = subprocess.run(
+            [
+                str(PYTHON),
+                "-m",
+                "cli.main",
+                "analyze",
+                str(SAMPLES / "sample.py"),
+                "--output",
+                str(output_path),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Solvix: Cannot write report to", result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

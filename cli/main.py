@@ -16,11 +16,11 @@ from output.json_formatter import format_json_report
 from output.terminal_formatter import print_terminal_report
 from output.text_formatter import format_text_report
 
-VERSION_BANNER = "Solvix/A v0.2.6 - Computational Intelligence Layer"
+VERSION_BANNER = "Solvix/A v0.2.7 - Computational Intelligence Layer"
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(version="0.2.6", prog_name="Solvix/A")
+@click.version_option(version="0.2.7", prog_name="Solvix/A")
 @click.pass_context
 def main(ctx: click.Context) -> None:
     """Solvix CLI."""
@@ -51,20 +51,19 @@ def analyze(
             project_mode=project,
             forced_language=forced_language,
         )
+        if output_path:
+            _save_report(report, output_path)
+
+        if json_output:
+            click.echo(json.dumps(format_json_report(report), indent=2))
+            return
+
+        print_terminal_report(report)
+        if output_path:
+            click.echo(f"Solvix: Report saved to {output_path}")
     except AnalysisError as exc:
         click.echo(str(exc))
         sys.exit(1)
-
-    if output_path:
-        _save_report(report, output_path)
-
-    if json_output:
-        click.echo(json.dumps(format_json_report(report), indent=2))
-        return
-
-    print_terminal_report(report)
-    if output_path:
-        click.echo(f"Solvix: Report saved to {output_path}")
 
 
 @main.command("bootstrap-parsers")
@@ -101,14 +100,19 @@ def doctor(json_output: bool) -> None:
 
 
 def _save_report(report: object, output_path: Path) -> None:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    if output_path.suffix.lower() == ".json":
-        output_path.write_text(
-            json.dumps(format_json_report(report), indent=2),
-            encoding="utf-8",
-        )
-        return
-    output_path.write_text(format_text_report(report), encoding="utf-8")
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        if output_path.suffix.lower() == ".json":
+            output_path.write_text(
+                json.dumps(format_json_report(report), indent=2),
+                encoding="utf-8",
+            )
+            return
+        output_path.write_text(format_text_report(report), encoding="utf-8")
+    except PermissionError as exc:
+        raise AnalysisError(
+            f"Solvix: Cannot write report to {output_path}. Check file permissions or choose a different output path."
+        ) from exc
 
 
 if __name__ == "__main__":
