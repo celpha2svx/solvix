@@ -2,11 +2,29 @@
   "name": "solvix",
   "version": "0.1.0",
   "description": "Computational intelligence layer for developers",
+  "keywords": [
+    "cli",
+    "python",
+    "developer-tools",
+    "code-analysis",
+    "performance"
+  ],
+  "homepage": "https://github.com/celpha2svx/solvix#readme",
+  "bugs": {
+    "url": "https://github.com/celpha2svx/solvix/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/celpha2svx/solvix.git"
+  },
   "bin": {
     "solvix": "bin/solvix.js"
   },
   "engines": {
     "node": ">=14"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "files": [
     "bin",

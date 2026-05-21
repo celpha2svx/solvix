@@ -104,19 +104,34 @@ The npm package is a launcher wrapper stored in `packages/npm/`.
 Before publishing:
 
 1. Make sure the version in `packages/npm/package.json` matches the Python release version.
-2. Log in to npm:
+2. Create or sign in to your account on [npmjs.com](https://www.npmjs.com/).
+3. If browser-based login is unreliable, use terminal login instead:
 
 ```bash
-npm login
+npm login --auth-type=legacy
 ```
 
-3. Change into the npm package directory:
+When prompted, enter:
+
+- npm username
+- npm password
+- email address
+
+4. Change into the npm package directory:
 
 ```bash
 cd packages/npm
 ```
 
-4. Publish:
+5. Check whether the plain package name is available:
+
+```bash
+npm view solvix version
+```
+
+If this returns a published version, the unscoped name is already taken and you should switch to a scoped name such as `@celpha2svx/solvix` before publishing.
+
+6. Publish:
 
 ```bash
 npm publish

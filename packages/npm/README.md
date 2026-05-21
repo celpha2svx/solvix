@@ -27,6 +27,12 @@ Then the npm launcher can be installed with:
 npm install -g solvix
 ```
 
+If the public npm name `solvix` is already taken at publish time, the fallback package name should be a scoped name such as:
+
+```bash
+npm install -g @celpha2svx/solvix
+```
+
 ## Notes
 
 - if Python is missing, the launcher prints a clear setup message
