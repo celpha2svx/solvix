@@ -123,7 +123,11 @@ When prompted, enter:
 cd packages/npm
 ```
 
-5. Check whether the plain package name is available:
+5. Build and publish GitHub release binaries for the same version tag before publishing npm.
+
+This is required because the npm launcher downloads platform binaries from GitHub Releases on first run.
+
+6. Check whether the plain package name is available:
 
 ```bash
 npm view solvix version
@@ -131,7 +135,7 @@ npm view solvix version
 
 If this returns a published version, the unscoped name is already taken and you should switch to a scoped name such as `@celpha2svx/solvix` before publishing.
 
-6. Publish:
+7. Publish:
 
 ```bash
 npm publish
@@ -145,8 +149,29 @@ npm install -g @celpha2svx/solvix
 
 The npm package requires:
 
-- Python `3.10+`
-- `pip install solvix`
+- matching Solvix release binaries on GitHub Releases
+
+## Build standalone binaries with Nuitka
+
+Install Nuitka in your release environment:
+
+```bash
+python -m pip install nuitka
+```
+
+Build the platform binary from the project root:
+
+```bash
+python scripts/build_binary.py
+```
+
+This produces a onefile binary in:
+
+```bash
+dist/binaries/
+```
+
+The release workflow in `.github/workflows/release-binaries.yml` builds and uploads platform binaries automatically on version tags.
 
 ## GitHub Actions publishing
 
@@ -155,8 +180,8 @@ The workflow in `.github/workflows/publish.yml` publishes automatically when a v
 Example tag:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
 Before using the workflow:

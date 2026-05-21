@@ -16,11 +16,11 @@ from output.json_formatter import format_json_report
 from output.terminal_formatter import print_terminal_report
 from output.text_formatter import format_text_report
 
-VERSION_BANNER = "Solvix/A v0.1.0 - Computational Intelligence Layer"
+VERSION_BANNER = "Solvix/A v0.2.0 - Computational Intelligence Layer"
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(version="0.1.0", prog_name="Solvix/A")
+@click.version_option(version="0.2.0", prog_name="Solvix/A")
 @click.pass_context
 def main(ctx: click.Context) -> None:
     """Solvix CLI."""

@@ -2,6 +2,12 @@
 
 Solvix is a lightweight computational intelligence CLI that analyzes functions and explains cost, cause, context, and one concrete fix.
 
+Distribution targets:
+
+- `pip install solvix` for Python users
+- `npm install -g @celpha2svx/solvix` for binary-first npm users
+- standalone binaries via GitHub Releases for Windows, macOS, and Linux
+
 Solvix uses native parser backends by default:
 
 - Python: built-in `ast`

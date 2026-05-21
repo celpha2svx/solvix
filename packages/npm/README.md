@@ -1,27 +1,16 @@
 # Solvix npm Launcher
 
-This npm package is a thin launcher for the Python version of Solvix.
+This npm package installs a thin launcher that downloads and runs the correct Solvix standalone binary for the current platform.
 
 ## What it does
 
 - installs a global `solvix` command through npm
-- detects Python on Windows, Mac, and Linux
-- forwards all CLI arguments to the Python Solvix CLI
+- downloads the matching Solvix binary from GitHub Releases
+- runs the same CLI on Windows, Mac, and Linux
 
 ## Requirements
 
-You must have:
-
-1. Python `3.10` or higher installed
-2. the Python Solvix package installed
-
-Install the Python package with:
-
-```bash
-pip install solvix
-```
-
-Then the npm launcher can be installed with:
+Install with:
 
 ```bash
 npm install -g @celpha2svx/solvix
@@ -31,6 +20,6 @@ This package uses a scoped npm name because the unscoped public name `solvix` is
 
 ## Notes
 
-- if Python is missing, the launcher prints a clear setup message
-- if the Python Solvix package is missing, the launcher tells you to run `pip install solvix`
-- this package does not contain the analysis engine itself; it only launches the Python CLI
+- the launcher downloads binaries from GitHub Releases on first run
+- if a matching release binary is missing, the launcher prints a clear error
+- this package does not bundle the engine source itself; it installs the platform binary at runtime
