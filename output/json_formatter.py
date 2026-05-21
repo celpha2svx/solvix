@@ -8,7 +8,7 @@ from core.report import ProjectReport, iso_timestamp, to_dict
 def format_json_report(report: object) -> dict:
     if isinstance(report, ProjectReport):
         return {
-            "solvix_version": "0.2.2",
+            "solvix_version": "0.2.6",
             "analyzed_at": iso_timestamp(),
             "project": True,
             "summary": to_dict(report.summary),
@@ -17,7 +17,7 @@ def format_json_report(report: object) -> dict:
 
     payload = to_dict(report)
     return {
-        "solvix_version": "0.2.2",
+        "solvix_version": "0.2.6",
         "analyzed_at": iso_timestamp(),
         "file": payload["file"],
         "language": payload["language"],
