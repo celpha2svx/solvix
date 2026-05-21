@@ -4,6 +4,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const https = require("https");
+const crypto = require("crypto");
 const { spawnSync } = require("child_process");
 
 const PACKAGE = require("../package.json");
@@ -52,11 +53,30 @@ function ensureBinary() {
   }
 
   fs.mkdirSync(CACHE_DIR, { recursive: true });
-  return downloadBinary(releaseUrl(), EXECUTABLE_PATH).then(() => {
+  return downloadBinary(releaseUrl(), EXECUTABLE_PATH)
+    .then(() => downloadText(`${releaseUrl()}.sha256`))
+    .then((checksumText) => {
+      verifyChecksum(EXECUTABLE_PATH, checksumText);
+    })
+    .then(() => {
     if (process.platform !== "win32") {
       fs.chmodSync(EXECUTABLE_PATH, 0o755);
     }
   });
+}
+
+function verifyChecksum(filePath, checksumText) {
+  const expected = checksumText.trim().split(/\s+/)[0];
+  const actual = crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+  if (actual !== expected) {
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+    throw new Error(
+      `Solvix checksum verification failed for ${path.basename(filePath)}. ` +
+        "Retry the install or verify the GitHub release assets."
+    );
+  }
 }
 
 function downloadBinary(url, destination) {
@@ -111,6 +131,52 @@ function downloadBinary(url, destination) {
               )
             );
           });
+        });
+    };
+
+    request(url);
+  });
+}
+
+function downloadText(url) {
+  return new Promise((resolve, reject) => {
+    const request = (target) => {
+      https
+        .get(target, (response) => {
+          if (
+            response.statusCode &&
+            response.statusCode >= 300 &&
+            response.statusCode < 400 &&
+            response.headers.location
+          ) {
+            request(response.headers.location);
+            return;
+          }
+
+          if (response.statusCode !== 200) {
+            reject(
+              new Error(
+                `Solvix checksum download failed from ${target} (status ${response.statusCode}). ` +
+                  "Verify that the GitHub release exists and includes checksum assets."
+              )
+            );
+            return;
+          }
+
+          let body = "";
+          response.setEncoding("utf8");
+          response.on("data", (chunk) => {
+            body += chunk;
+          });
+          response.on("end", () => resolve(body));
+        })
+        .on("error", (error) => {
+          reject(
+            new Error(
+              `Solvix checksum download failed: ${error.message}. ` +
+                "Check your network connection or install from GitHub Releases manually."
+            )
+          );
         });
     };
 

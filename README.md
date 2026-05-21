@@ -6,7 +6,9 @@ Distribution targets:
 
 - `pip install solvix` for Python users
 - `npm install -g @celpha2svx/solvix` for binary-first npm users
+- `curl -fsSL https://github.com/celpha2svx/solvix/releases/latest/download/install.sh | sh` for Linux and macOS
 - standalone binaries via GitHub Releases for Windows, macOS, and Linux
+- generated Homebrew formula from the same release artifacts
 
 Solvix uses native parser backends by default:
 

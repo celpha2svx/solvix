@@ -46,7 +46,47 @@ jobs:
       - name: Build binary
         run: python scripts/build_binary.py
 
+      - name: Write checksum sidecars
+        run: python scripts/write_checksums.py dist/binaries
+
       - name: Upload binary to release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/binaries/*
+
+  release-metadata:
+    name: Publish release metadata
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dist/release-assets
+          gh release download ${{ github.ref_name }} --dir dist/release-assets --pattern "solvix-windows-*"
+          gh release download ${{ github.ref_name }} --dir dist/release-assets --pattern "solvix-linux-*"
+          gh release download ${{ github.ref_name }} --dir dist/release-assets --pattern "solvix-macos-*"
+
+      - name: Generate release manifest
+        run: |
+          python scripts/generate_release_manifest.py --version ${{ github.ref_name }} --repo celpha2svx/solvix --asset-dir dist/release-assets --output-dir dist/release-metadata
+          python scripts/update_homebrew_formula.py --version ${{ github.ref_name }} --repo celpha2svx/solvix --asset-dir dist/release-assets --output dist/release-metadata/solvix.rb
+          cp scripts/install.sh dist/release-metadata/install.sh
+
+      - name: Upload release metadata
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/release-metadata/solvix-release.json
+            dist/release-metadata/solvix-checksums.txt
+            dist/release-metadata/solvix.rb
+            dist/release-metadata/install.sh
