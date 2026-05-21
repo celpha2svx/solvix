@@ -140,7 +140,7 @@ npm publish
 After publishing, users can install the launcher with:
 
 ```bash
-npm install -g solvix
+npm install -g @celpha2svx/solvix
 ```
 
 The npm package requires:

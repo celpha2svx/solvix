@@ -24,14 +24,10 @@ pip install solvix
 Then the npm launcher can be installed with:
 
 ```bash
-npm install -g solvix
-```
-
-If the public npm name `solvix` is already taken at publish time, the fallback package name should be a scoped name such as:
-
-```bash
 npm install -g @celpha2svx/solvix
 ```
+
+This package uses a scoped npm name because the unscoped public name `solvix` is not available on npm.
 
 ## Notes
 
