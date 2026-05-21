@@ -101,6 +101,10 @@ def doctor(json_output: bool) -> None:
 
 def _save_report(report: object, output_path: Path) -> None:
     try:
+        if output_path.exists() and output_path.is_dir():
+            raise AnalysisError(
+                f"Solvix: Cannot write report to {output_path}. Check file permissions or choose a different output path."
+            )
         output_path.parent.mkdir(parents=True, exist_ok=True)
         if output_path.suffix.lower() == ".json":
             output_path.write_text(
@@ -109,7 +113,7 @@ def _save_report(report: object, output_path: Path) -> None:
             )
             return
         output_path.write_text(format_text_report(report), encoding="utf-8")
-    except PermissionError as exc:
+    except (PermissionError, IsADirectoryError) as exc:
         raise AnalysisError(
             f"Solvix: Cannot write report to {output_path}. Check file permissions or choose a different output path."
         ) from exc
