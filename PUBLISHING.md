@@ -182,13 +182,20 @@ Solvix Homebrew distribution is generated from the release assets rather than bu
 After a release tag finishes:
 
 1. download the generated `solvix.rb` asset from the GitHub Release
-2. commit it to your Homebrew tap repository under `Formula/solvix.rb`
-3. push the tap repository
+2. copy it into your tap repository under `Formula/solvix.rb`
+3. commit and push the tap repository
+
+If you have the tap repo checked out locally, you can stage it with:
+
+```bash
+python scripts/publish_homebrew_formula.py --formula dist/release-metadata/solvix.rb --tap-repo ../homebrew-solvix
+```
 
 Then users can install with:
 
 ```bash
-brew install <your-tap>/solvix
+brew tap celpha2svx/solvix
+brew install solvix
 ```
 
 ## Build standalone binaries with Nuitka
