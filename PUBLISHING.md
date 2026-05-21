@@ -97,6 +97,42 @@ After publishing, users can install with:
 pip install solvix
 ```
 
+## Publish to npm
+
+The npm package is a launcher wrapper stored in `packages/npm/`.
+
+Before publishing:
+
+1. Make sure the version in `packages/npm/package.json` matches the Python release version.
+2. Log in to npm:
+
+```bash
+npm login
+```
+
+3. Change into the npm package directory:
+
+```bash
+cd packages/npm
+```
+
+4. Publish:
+
+```bash
+npm publish
+```
+
+After publishing, users can install the launcher with:
+
+```bash
+npm install -g solvix
+```
+
+The npm package requires:
+
+- Python `3.10+`
+- `pip install solvix`
+
 ## GitHub Actions publishing
 
 The workflow in `.github/workflows/publish.yml` publishes automatically when a version tag is pushed.
