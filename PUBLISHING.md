@@ -151,6 +151,46 @@ The npm package requires:
 
 - matching Solvix release binaries on GitHub Releases
 
+## Publish the curl installer and release metadata
+
+The binary release workflow now also publishes:
+
+- per-binary `.sha256` files
+- `solvix-release.json`
+- `solvix-checksums.txt`
+- `install.sh`
+- `solvix.rb` for Homebrew tap usage
+
+These are generated automatically from the same release binaries, so npm, curl install, and Homebrew all track one artifact set.
+
+Users can install with:
+
+```bash
+curl -fsSL https://github.com/celpha2svx/solvix/releases/latest/download/install.sh | sh
+```
+
+You can pin a version with:
+
+```bash
+curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.2.3/install.sh | SOLVIX_VERSION=v0.2.3 sh
+```
+
+## Publish to Homebrew
+
+Solvix Homebrew distribution is generated from the release assets rather than built separately.
+
+After a release tag finishes:
+
+1. download the generated `solvix.rb` asset from the GitHub Release
+2. commit it to your Homebrew tap repository under `Formula/solvix.rb`
+3. push the tap repository
+
+Then users can install with:
+
+```bash
+brew install <your-tap>/solvix
+```
+
 ## Build standalone binaries with Nuitka
 
 Install Nuitka in your release environment:
@@ -184,10 +224,11 @@ git tag v0.2.2
 git push origin v0.2.2
 ```
 
-Before using the workflow:
+Before using the workflows:
 
 1. Add a PyPI trusted publisher for this repository in PyPI, or configure a `PYPI_API_TOKEN` secret if you prefer token-based upload.
 2. Make sure the package version in `pyproject.toml` and `setup.py` matches the tag you are releasing.
+3. Make sure the npm version matches the same release before publishing `@celpha2svx/solvix`.
 
 ## Release checklist
 
@@ -198,4 +239,8 @@ Before using the workflow:
 5. Check with `python -m twine check dist/*`.
 6. Publish to TestPyPI.
 7. Smoke-test installation from TestPyPI.
-8. Push the release tag or upload to PyPI manually.
+8. Push the release tag.
+9. Wait for PyPI and release binary workflows to finish.
+10. Publish npm.
+11. Smoke-test `npm install -g @celpha2svx/solvix`.
+12. Smoke-test `curl -fsSL .../install.sh | sh`.
