@@ -1,0 +1,1 @@
+"""Pattern rules for Solvix."""

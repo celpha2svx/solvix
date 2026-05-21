@@ -1,0 +1,21 @@
+=== Solvix/A Report ===
+Function : concat_function
+Language : Rust
+Parser   : tree-sitter-language-pack
+Cost     : MODERATE
+Patterns : 1 found
+
+[MEDIUM] Line 35 - String Concatenation In Loop
+String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.
+-> Use a string builder or join pattern. Collect parts in a list and join once outside the loop.
+
+Context: No strong usage context detected in this file.
+Urgency: MODERATE - modifier neutral
+
+=== Solvix/A File Summary ===
+File      : C:\Users\Adminn\Solvix\tests\samples\sample.rs
+Language  : Rust
+Parser    : tree-sitter-language-pack
+Functions : 1
+Clean     : 0
+Flagged   : 1

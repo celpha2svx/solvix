@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "solvix"
+version = "0.1.0"
+description = "Computational intelligence layer for developers"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Solvix Contributors", email = "maintainers@solvix.dev" }
+]
+dependencies = [
+  "tree-sitter>=0.25.0",
+  "tree-sitter-language-pack>=0.13.0",
+  "click>=8.0.0",
+  "rich>=13.0.0",
+  "pygments>=2.0.0",
+]
+
+[project.scripts]
+solvix = "cli.main:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["adapters*", "cli*", "context*", "core*", "output*", "patterns*", "tests*"]

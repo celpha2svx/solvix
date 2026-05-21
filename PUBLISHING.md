@@ -1,0 +1,125 @@
+# Publishing Solvix
+
+This guide shows how to publish Solvix to PyPI so users can later run `pip install solvix`.
+
+## Prerequisites
+
+1. Create a PyPI account at [pypi.org](https://pypi.org).
+2. Create a TestPyPI account at [test.pypi.org](https://test.pypi.org).
+3. Create an API token for PyPI.
+4. Create an API token for TestPyPI.
+5. Install publishing tools:
+
+```bash
+python -m pip install --upgrade build twine
+```
+
+## Verify the package locally
+
+From the project root:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install .
+solvix doctor
+```
+
+If you want an isolated test:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install .
+solvix analyze tests/samples/sample.py
+```
+
+On Windows PowerShell:
+
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install .
+solvix analyze tests/samples/sample.py
+```
+
+## Build distribution files
+
+From the project root:
+
+```bash
+python -m build
+```
+
+This creates:
+
+- `dist/*.tar.gz`
+- `dist/*.whl`
+
+## Check the distribution
+
+```bash
+python -m twine check dist/*
+```
+
+## Publish to TestPyPI first
+
+```bash
+python -m twine upload --repository testpypi dist/*
+```
+
+When prompted:
+
+- username: `__token__`
+- password: your TestPyPI API token
+
+Then test installation:
+
+```bash
+python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple solvix
+```
+
+## Publish to PyPI
+
+```bash
+python -m twine upload dist/*
+```
+
+When prompted:
+
+- username: `__token__`
+- password: your PyPI API token
+
+After publishing, users can install with:
+
+```bash
+pip install solvix
+```
+
+## GitHub Actions publishing
+
+The workflow in `.github/workflows/publish.yml` publishes automatically when a version tag is pushed.
+
+Example tag:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Before using the workflow:
+
+1. Add a PyPI trusted publisher for this repository in PyPI, or configure a `PYPI_API_TOKEN` secret if you prefer token-based upload.
+2. Make sure the package version in `pyproject.toml` and `setup.py` matches the tag you are releasing.
+
+## Release checklist
+
+1. Update version numbers.
+2. Run the test suite.
+3. Run `solvix doctor`.
+4. Build with `python -m build`.
+5. Check with `python -m twine check dist/*`.
+6. Publish to TestPyPI.
+7. Smoke-test installation from TestPyPI.
+8. Push the release tag or upload to PyPI manually.

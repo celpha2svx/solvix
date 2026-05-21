@@ -1,0 +1,128 @@
+{
+  "solvix_version": "0.1.0",
+  "analyzed_at": "2026-05-21T01:18:13+00:00",
+  "file": "tests\\samples\\sample.java",
+  "language": "java",
+  "parser": {
+    "backend": "tree-sitter-language-pack",
+    "quality": "native",
+    "degraded": false,
+    "note": "Native parser backend via tree-sitter-language-pack."
+  },
+  "summary": {
+    "total_functions": 5,
+    "cheap": 2,
+    "moderate": 1,
+    "expensive": 2,
+    "critical": 0
+  },
+  "functions": [
+    {
+      "name": "nested_function",
+      "line_start": 2,
+      "line_end": 12,
+      "cost": {
+        "label": "EXPENSIVE",
+        "score": 7,
+        "dominant_severity": "HIGH"
+      },
+      "context": {
+        "is_hot_path": false,
+        "call_frequency": "unknown",
+        "urgency_modifier": "neutral"
+      },
+      "patterns": [
+        {
+          "name": "nested_loop",
+          "severity": "HIGH",
+          "line": 4,
+          "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+          "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+          "label": null
+        }
+      ]
+    },
+    {
+      "name": "allocation_function",
+      "line_start": 14,
+      "line_end": 20,
+      "cost": {
+        "label": "CHEAP",
+        "score": 0,
+        "dominant_severity": "LOW"
+      },
+      "context": {
+        "is_hot_path": false,
+        "call_frequency": "unknown",
+        "urgency_modifier": "neutral"
+      },
+      "patterns": []
+    },
+    {
+      "name": "clean_function",
+      "line_start": 22,
+      "line_end": 24,
+      "cost": {
+        "label": "CHEAP",
+        "score": 0,
+        "dominant_severity": "LOW"
+      },
+      "context": {
+        "is_hot_path": false,
+        "call_frequency": "unknown",
+        "urgency_modifier": "neutral"
+      },
+      "patterns": []
+    },
+    {
+      "name": "recursive_function",
+      "line_start": 26,
+      "line_end": 31,
+      "cost": {
+        "label": "MODERATE",
+        "score": 3,
+        "dominant_severity": "MEDIUM"
+      },
+      "context": {
+        "is_hot_path": false,
+        "call_frequency": "unknown",
+        "urgency_modifier": "neutral"
+      },
+      "patterns": [
+        {
+          "name": "recursion_without_memoization",
+          "severity": "MEDIUM",
+          "line": 30,
+          "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+          "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+          "label": null
+        }
+      ]
+    },
+    {
+      "name": "concat_function",
+      "line_start": 33,
+      "line_end": 39,
+      "cost": {
+        "label": "EXPENSIVE",
+        "score": 7,
+        "dominant_severity": "HIGH"
+      },
+      "context": {
+        "is_hot_path": false,
+        "call_frequency": "unknown",
+        "urgency_modifier": "neutral"
+      },
+      "patterns": [
+        {
+          "name": "string_concatenation_in_loop",
+          "severity": "HIGH",
+          "line": 36,
+          "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+          "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+          "label": null
+        }
+      ]
+    }
+  ]
+}
