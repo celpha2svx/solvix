@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -13,7 +14,7 @@ from output.json_formatter import format_json_report
 
 SAMPLES = Path(__file__).parent / "samples"
 ROOT = Path(__file__).resolve().parent.parent
-PYTHON = Path(r"C:\Users\Adminn\AppData\Local\Programs\Python\Launcher\py.exe")
+PYTHON = sys.executable
 
 
 class SolvixTests(unittest.TestCase):
@@ -68,7 +69,6 @@ class SolvixTests(unittest.TestCase):
         result = subprocess.run(
             [
                 str(PYTHON),
-                "-3",
                 "-m",
                 "cli.main",
                 "analyze",
@@ -91,7 +91,6 @@ class SolvixTests(unittest.TestCase):
         result = subprocess.run(
             [
                 str(PYTHON),
-                "-3",
                 "-m",
                 "cli.main",
                 "analyze",
