@@ -18,7 +18,7 @@ from output.json_formatter import format_json_report
 from output.terminal_formatter import print_terminal_report
 from output.text_formatter import format_text_report
 
-VERSION_BANNER = "Solvix/A v0.3.0 - Computational Intelligence Layer"
+VERSION_BANNER = "Solvix/A v0.3.1 - Computational Intelligence Layer"
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"], "max_content_width": 100}
 
 ROOT_HELP = """Solvix analyzes source code cost and points you to the next useful fix.
@@ -87,7 +87,7 @@ Examples:
 
 
 @click.group(invoke_without_command=True, context_settings=CONTEXT_SETTINGS, help=ROOT_HELP)
-@click.version_option(version="0.3.0", prog_name="Solvix/A")
+@click.version_option(version="0.3.1", prog_name="Solvix/A")
 @click.pass_context
 def main(ctx: click.Context) -> None:
     """Solvix CLI."""

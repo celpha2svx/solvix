@@ -117,6 +117,15 @@ class SolvixTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
+    def _normalize_path(self, path: str) -> str:
+        return path.replace("\\", "/")
+
+    def _path_endswith(self, path: str, suffix: str) -> bool:
+        return self._normalize_path(path).endswith(self._normalize_path(suffix))
+
+    def _assert_path_contains(self, path: str, suffix: str) -> None:
+        self.assertIn(self._normalize_path(suffix), self._normalize_path(path))
+
     def _top_hotspot(self, report):
         hotspots = report.summary.prioritized_hotspots or report.summary.top_functions
         self.assertTrue(hotspots)
@@ -135,7 +144,7 @@ class SolvixTests(unittest.TestCase):
     def _theme_keys_for_file(self, report, file_suffix: str) -> list[str]:
         keys: list[str] = []
         for theme in self._synthesis(report).dominant_themes:
-            if any(example["file"].endswith(file_suffix) for example in theme.representative_examples):
+            if any(self._path_endswith(example["file"], file_suffix) for example in theme.representative_examples):
                 keys.append(theme.key)
         return keys
 
@@ -566,7 +575,7 @@ class SolvixTests(unittest.TestCase):
             self.assertEqual(archive.read("solvix.exe"), b"fake solvix binary")
 
         manifest_paths = build_winget_manifests(
-            version="v0.3.0",
+            version="v0.3.1",
             repo="celpha2svx/solvix",
             asset_dir=output_dir,
             output_dir=temp_dir / "winget",
@@ -613,8 +622,8 @@ class SolvixTests(unittest.TestCase):
         self.assertTrue(
             any(item.manifest == "pyproject.toml" and item.marker == "flask" for item in report.profile.evidence.dependency_details)
         )
-        src_report = next(item for item in report.files if item.file.endswith("src\\app.py"))
-        test_report = next(item for item in report.files if item.file.endswith("tests\\test_app.py"))
+        src_report = next(item for item in report.files if self._path_endswith(item.file, "src/app.py"))
+        test_report = next(item for item in report.files if self._path_endswith(item.file, "tests/test_app.py"))
         self.assertEqual(src_report.summary.zone, "critical")
         self.assertEqual(test_report.summary.zone, "noise")
         self.assertIn("critical_directory", src_report.zone_reasons)
@@ -653,7 +662,7 @@ class SolvixTests(unittest.TestCase):
         self.assertTrue(
             any(item.manifest == "pyproject.toml" and item.marker == "fastapi" for item in report.profile.evidence.dependency_details)
         )
-        cli_report = next(item for item in report.files if item.file.endswith("cli\\main.py"))
+        cli_report = next(item for item in report.files if self._path_endswith(item.file, "cli/main.py"))
         self.assertEqual(cli_report.summary.zone, "critical")
 
     def test_project_profile_parses_package_json_structurally(self) -> None:
@@ -704,7 +713,7 @@ class SolvixTests(unittest.TestCase):
         self.assertEqual(report.profile.web_shape, "api_service")
         self.assertIsNone(report.profile.hybrid_shape)
         self.assertGreaterEqual(report.profile.confidence_score, 8)
-        api_report = next(item for item in report.files if item.file.endswith("api\\handlers.py"))
+        api_report = next(item for item in report.files if self._path_endswith(item.file, "api/handlers.py"))
         self.assertIn("web_route_path", api_report.zone_reasons)
 
     def test_project_profile_distinguishes_website_web_app(self) -> None:
@@ -739,7 +748,7 @@ class SolvixTests(unittest.TestCase):
         self.assertEqual(report.profile.web_shape, "website_web_app")
         self.assertIn("web_ui", report.profile.surfaces)
         self.assertGreaterEqual(report.profile.confidence_score, 8)
-        page_report = next(item for item in report.files if item.file.endswith("pages\\home.ts"))
+        page_report = next(item for item in report.files if self._path_endswith(item.file, "pages/home.ts"))
         self.assertIn("website_ui_path", page_report.zone_reasons)
 
     def test_project_profile_distinguishes_distributed_monolith(self) -> None:
@@ -812,8 +821,8 @@ class SolvixTests(unittest.TestCase):
         self.assertEqual(report.profile.primary_profile, "device_firmware")
         self.assertIn("web_backend", report.profile.secondary_profiles)
         self.assertEqual(report.profile.hybrid_shape, "device_firmware_cloud")
-        firmware_report = next(item for item in report.files if item.file.endswith("firmware\\drivers\\sensor.c"))
-        cloud_report = next(item for item in report.files if item.file.endswith("cloud\\api\\app.py"))
+        firmware_report = next(item for item in report.files if self._path_endswith(item.file, "firmware/drivers/sensor.c"))
+        cloud_report = next(item for item in report.files if self._path_endswith(item.file, "cloud/api/app.py"))
         self.assertEqual(firmware_report.summary.zone, "critical")
         self.assertEqual(cloud_report.summary.zone, "critical")
         self.assertIn("firmware_path", firmware_report.zone_reasons)
@@ -836,7 +845,7 @@ class SolvixTests(unittest.TestCase):
         self.assertEqual(report.profile.primary_profile, "device_firmware")
         self.assertIn("serverless_application", report.profile.secondary_profiles)
         self.assertEqual(report.profile.hybrid_shape, "device_firmware_serverless")
-        function_report = next(item for item in report.files if item.file.endswith("functions\\main.py"))
+        function_report = next(item for item in report.files if self._path_endswith(item.file, "functions/main.py"))
         self.assertIn("serverless_function_path", function_report.zone_reasons)
 
     def test_project_profile_infers_serverless_application(self) -> None:
@@ -962,10 +971,10 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.primary_profile, "framework_library")
-        self.assertIn("src\\dispatch.py", hotspot["file"])
+        self._assert_path_contains(hotspot["file"], "src/dispatch.py")
         self.assertEqual(hotspot["function"], "dispatch_request")
-        src_report = next(item for item in report.files if item.file.endswith("src\\dispatch.py"))
-        test_report = next(item for item in report.files if item.file.endswith("tests\\test_dispatch.py"))
+        src_report = next(item for item in report.files if self._path_endswith(item.file, "src/dispatch.py"))
+        test_report = next(item for item in report.files if self._path_endswith(item.file, "tests/test_dispatch.py"))
         self.assertGreater(src_report.functions[0].relevance.score, test_report.functions[0].relevance.score)
 
     def test_stage2_relevance_api_service_prefers_request_path(self) -> None:
@@ -998,7 +1007,7 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.web_shape, "api_service")
-        self.assertIn("api\\handlers.py", hotspot["file"])
+        self._assert_path_contains(hotspot["file"], "api/handlers.py")
         self.assertEqual(hotspot["function"], "handle_request")
 
     def test_stage2_relevance_website_prefers_ui_surface(self) -> None:
@@ -1039,7 +1048,7 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.web_shape, "website_web_app")
-        self.assertIn("pages\\home.ts", hotspot["file"])
+        self._assert_path_contains(hotspot["file"], "pages/home.ts")
         self.assertEqual(hotspot["function"], "render_page")
 
     def test_stage2_relevance_cli_prefers_command_startup(self) -> None:
@@ -1068,7 +1077,7 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.primary_profile, "cli_tool")
-        self.assertIn("cli\\main.py", hotspot["file"])
+        self._assert_path_contains(hotspot["file"], "cli/main.py")
         self.assertEqual(hotspot["function"], "main")
 
     def test_stage2_relevance_data_pipeline_prefers_throughput_path(self) -> None:
@@ -1101,7 +1110,7 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.primary_profile, "data_pipeline")
-        self.assertIn("pipelines\\daily.py", hotspot["file"])
+        self._assert_path_contains(hotspot["file"], "pipelines/daily.py")
         self.assertEqual(hotspot["function"], "run_pipeline")
 
     def test_stage2_relevance_serverless_boosts_startup_handler(self) -> None:
@@ -1132,7 +1141,7 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.primary_profile, "serverless_application")
-        self.assertIn("functions\\main.py", hotspot["file"])
+        self._assert_path_contains(hotspot["file"], "functions/main.py")
         self.assertEqual(hotspot["function"], "boot_handler")
 
     def test_stage2_relevance_firmware_cloud_surfaces_both_sides(self) -> None:
@@ -1174,8 +1183,8 @@ class SolvixTests(unittest.TestCase):
         hotspots = report.summary.prioritized_hotspots or report.summary.top_functions
         top_files = {item["file"] for item in hotspots[:2]}
         self.assertEqual(report.profile.hybrid_shape, "device_firmware_cloud")
-        self.assertTrue(any(file.endswith("firmware\\drivers\\sensor.c") for file in top_files))
-        self.assertTrue(any(file.endswith("cloud\\api\\app.py") for file in top_files))
+        self.assertTrue(any(self._path_endswith(file, "firmware/drivers/sensor.c") for file in top_files))
+        self.assertTrue(any(self._path_endswith(file, "cloud/api/app.py") for file in top_files))
 
     def test_stage2_relevance_microservices_prefers_service_entrypoints(self) -> None:
         temp_dir = self._scratch_dir("stage2_microservices")
@@ -1217,7 +1226,7 @@ class SolvixTests(unittest.TestCase):
         report = _analyze_project(temp_dir, None)
         hotspot = self._top_hotspot(report)
         self.assertEqual(report.profile.service_topology, "microservices")
-        self.assertNotIn("tests\\test_gateway.py", hotspot["file"])
+        self.assertNotIn(self._normalize_path("tests/test_gateway.py"), self._normalize_path(hotspot["file"]))
         self.assertIn(hotspot["project_priority_label"], {"worth_reviewing", "high_priority", "fix_first"})
 
     def test_stage2_relevance_test_heavy_repository_stays_discounted(self) -> None:
@@ -1680,11 +1689,11 @@ class SolvixTests(unittest.TestCase):
         )
 
         report = _analyze_project(temp_dir, None)
-        self.assertIn("device_memory_pressure:loop_amplification", self._theme_keys_for_file(report, "firmware\\drivers\\sensor.c"))
-        self.assertIn("cloud_control_path:loop_amplification", self._theme_keys_for_file(report, "cloud\\api\\app.py"))
-        self.assertIn("general_efficiency_review:loop_amplification", self._theme_keys_for_file(report, "src\\helpers.py"))
-        self.assertNotIn("device_memory_pressure:loop_amplification", self._theme_keys_for_file(report, "src\\helpers.py"))
-        self.assertNotIn("request_path_hotspots:loop_amplification", self._theme_keys_for_file(report, "src\\helpers.py"))
+        self.assertIn("device_memory_pressure:loop_amplification", self._theme_keys_for_file(report, "firmware/drivers/sensor.c"))
+        self.assertIn("cloud_control_path:loop_amplification", self._theme_keys_for_file(report, "cloud/api/app.py"))
+        self.assertIn("general_efficiency_review:loop_amplification", self._theme_keys_for_file(report, "src/helpers.py"))
+        self.assertNotIn("device_memory_pressure:loop_amplification", self._theme_keys_for_file(report, "src/helpers.py"))
+        self.assertNotIn("request_path_hotspots:loop_amplification", self._theme_keys_for_file(report, "src/helpers.py"))
 
     def test_stage4_multilens_framework_library_defaults_to_maintainability(self) -> None:
         temp_dir = self._scratch_dir("stage4_framework_library")

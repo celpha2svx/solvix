@@ -198,7 +198,7 @@ curl -fsSL https://github.com/celpha2svx/solvix/releases/latest/download/install
 You can pin a version with:
 
 ```bash
-curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.3.0/install.sh | SOLVIX_VERSION=v0.3.0 sh
+curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.3.1/install.sh | SOLVIX_VERSION=v0.3.1 sh
 ```
 
 ## Prepare winget publication
@@ -286,8 +286,8 @@ The workflow in `.github/workflows/publish.yml` publishes automatically when a v
 Example tag:
 
 ```bash
-git tag v0.3.0
-git push origin v0.3.0
+git tag v0.3.1
+git push origin v0.3.1
 ```
 
 Before using the workflows:
