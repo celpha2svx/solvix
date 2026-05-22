@@ -80,6 +80,8 @@ jobs:
         run: |
           python scripts/generate_release_manifest.py --version ${{ github.ref_name }} --repo celpha2svx/solvix --asset-dir dist/release-assets --output-dir dist/release-metadata
           python scripts/update_homebrew_formula.py --version ${{ github.ref_name }} --repo celpha2svx/solvix --asset-dir dist/release-assets --output dist/release-metadata/solvix.rb
+          python scripts/generate_winget_assets.py --asset-dir dist/release-assets --output-dir dist/release-metadata
+          python scripts/generate_winget_manifest.py --version ${{ github.ref_name }} --repo celpha2svx/solvix --asset-dir dist/release-metadata --output-dir dist/release-metadata/winget
           cp scripts/install.sh dist/release-metadata/install.sh
 
       - name: Upload release metadata
@@ -90,3 +92,6 @@ jobs:
             dist/release-metadata/solvix-checksums.txt
             dist/release-metadata/solvix.rb
             dist/release-metadata/install.sh
+            dist/release-metadata/solvix-windows-*-portable.zip
+            dist/release-metadata/solvix-windows-*-portable.zip.sha256
+            dist/release-metadata/winget/manifests/**/*.yaml

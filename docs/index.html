@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solvix Docs</title>
+    <meta name="description" content="Documentation for Solvix, a fast binary-first code intelligence CLI.">
+    <link rel="stylesheet" href="./site.css">
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__inner">
+        <p class="eyebrow">Solvix Documentation</p>
+        <h1>Fast, deterministic code intelligence for real repositories.</h1>
+        <p class="lede">
+          Solvix profiles the repository, ranks what matters, groups repeated signals into themes,
+          and can optionally add AI explanation on top without putting AI in the critical path.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#install">Get Started</a>
+          <a class="button button--secondary" href="#guides">Open Guides</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card-grid" id="install">
+        <article class="card">
+          <h2>Windows</h2>
+          <pre><code>winget install Solvix.Solvix</code></pre>
+          <p>Recommended global install for Windows users.</p>
+        </article>
+        <article class="card">
+          <h2>macOS</h2>
+          <pre><code>brew tap celpha2svx/solvix
+brew install solvix</code></pre>
+          <p>Recommended install for macOS once the tap is live.</p>
+        </article>
+        <article class="card">
+          <h2>Linux / Cloud</h2>
+          <pre><code>curl -fsSL https://github.com/celpha2svx/solvix/releases/latest/download/install.sh | sh</code></pre>
+          <p>Recommended install for Linux, cloud servers, and generic Unix environments.</p>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <p class="eyebrow">Quick Start</p>
+          <h2>Common commands</h2>
+        </div>
+        <div class="two-col">
+          <pre><code>solvix doctor
+solvix analyze app.py
+solvix analyze src --project
+solvix analyze src --project --json --output report.json
+solvix analyze src --project --ai-mode assist</code></pre>
+          <div>
+            <p>Solvix is designed to be fast by default.</p>
+            <ul>
+              <li>Deterministic analysis runs without API keys.</li>
+              <li>AI overlay is optional and post-processing only.</li>
+              <li>Use <code>solvix doctor</code> first if you want to confirm parser health.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="guides">
+        <div class="panel__header">
+          <p class="eyebrow">Guides</p>
+          <h2>Operational docs in this repo</h2>
+        </div>
+        <div class="doc-list">
+          <a class="doc-link" href="./ARCHITECTURE.md">Architecture</a>
+          <a class="doc-link" href="./RELEASE_OPERATIONS.md">Release Operations</a>
+          <a class="doc-link" href="./CLI_UX_AND_RELEASE_READINESS.md">CLI UX and Release Readiness</a>
+          <a class="doc-link" href="./SMOKE_TESTS.md">Smoke Tests</a>
+          <a class="doc-link" href="./WINGET_READINESS.md">Winget Readiness</a>
+          <a class="doc-link" href="./PROJECT_INTELLIGENCE_STAGE1.md">Project Intelligence Stage 1</a>
+          <a class="doc-link" href="./PROJECT_INTELLIGENCE_STAGE2.md">Project Intelligence Stage 2</a>
+          <a class="doc-link" href="./PROJECT_INTELLIGENCE_STAGE3.md">Project Intelligence Stage 3</a>
+          <a class="doc-link" href="./PROJECT_INTELLIGENCE_STAGE4.md">Project Intelligence Stage 4</a>
+          <a class="doc-link" href="./PROJECT_INTELLIGENCE_STAGE5.md">Project Intelligence Stage 5</a>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
+          <p class="eyebrow">AI Overlay</p>
+          <h2>Optional, grounded, and failure-safe</h2>
+        </div>
+        <div class="two-col">
+          <div>
+            <p>The deterministic engine does not require an API key.</p>
+            <p>To enable the optional AI overlay:</p>
+            <pre><code>export OPENAI_API_KEY="sk-..."
+solvix analyze . --project --ai-mode assist</code></pre>
+          </div>
+          <div>
+            <ul>
+              <li>AI runs after deterministic analysis.</li>
+              <li>AI receives compressed structured inputs only.</li>
+              <li>If AI fails, deterministic reporting still succeeds.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

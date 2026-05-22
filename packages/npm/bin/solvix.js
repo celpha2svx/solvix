@@ -16,6 +16,10 @@ const CACHE_DIR = path.join(CACHE_ROOT, "solvix", VERSION);
 const EXECUTABLE_NAME = resolveExecutableName();
 const EXECUTABLE_PATH = path.join(CACHE_DIR, EXECUTABLE_NAME);
 
+function status(message) {
+  console.error(`Solvix: ${message}`);
+}
+
 function getCacheRoot() {
   if (process.platform === "win32") {
     return process.env.LOCALAPPDATA || path.join(os.homedir(), "AppData", "Local");
@@ -52,17 +56,24 @@ function ensureBinary() {
     return Promise.resolve();
   }
 
+  status(`locating ${EXECUTABLE_NAME} for Solvix ${VERSION}`);
   fs.mkdirSync(CACHE_DIR, { recursive: true });
+  status("downloading binary");
   return downloadBinary(releaseUrl(), EXECUTABLE_PATH)
-    .then(() => downloadText(`${releaseUrl()}.sha256`))
+    .then(() => {
+      status("downloading checksum");
+      return downloadText(`${releaseUrl()}.sha256`);
+    })
     .then((checksumText) => {
+      status("verifying checksum");
       verifyChecksum(EXECUTABLE_PATH, checksumText);
     })
     .then(() => {
-    if (process.platform !== "win32") {
-      fs.chmodSync(EXECUTABLE_PATH, 0o755);
-    }
-  });
+      if (process.platform !== "win32") {
+        fs.chmodSync(EXECUTABLE_PATH, 0o755);
+      }
+      status(`ready at ${EXECUTABLE_PATH}`);
+    });
 }
 
 function verifyChecksum(filePath, checksumText) {

@@ -1,0 +1,2199 @@
+{
+  "solvix_version": "0.2.8",
+  "analyzed_at": "2026-05-21T23:35:17+00:00",
+  "project": true,
+  "profile": {
+    "project_type": "general_application",
+    "primary_objectives": [
+      "maintainability",
+      "efficiency",
+      "readability"
+    ],
+    "secondary_objectives": [
+      "startup_time",
+      "memory_efficiency"
+    ],
+    "primary_languages": [
+      "C",
+      "Cpp",
+      "Go"
+    ],
+    "critical_zones": [],
+    "noise_zones": [],
+    "detected_markers": [],
+    "explanation": "Stage 1 profile classifies this repository as general application. Primary language signals: C, Cpp, Go. Detected markers: no strong framework markers. Likely noise zones: no obvious noise zones. Likely critical zones: no dominant critical zones inferred yet."
+  },
+  "summary": {
+    "files_analyzed": 12,
+    "languages_found": [
+      "C",
+      "Cpp",
+      "Go",
+      "Java",
+      "Javascript",
+      "Kotlin",
+      "Php",
+      "Python",
+      "Ruby",
+      "Rust",
+      "Swift",
+      "Typescript"
+    ],
+    "total_functions": 60,
+    "clean_functions": 26,
+    "flagged_functions": 34,
+    "top_functions": [
+      {
+        "label": "CRITICAL",
+        "file": "tests\\samples\\sample.c",
+        "function": "<anonymous>"
+      },
+      {
+        "label": "CRITICAL",
+        "file": "tests\\samples\\sample.kt",
+        "function": "<anonymous>"
+      },
+      {
+        "label": "CRITICAL",
+        "file": "tests\\samples\\sample.ts",
+        "function": "recursive_function"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.c",
+        "function": "<anonymous>"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.cpp",
+        "function": "<anonymous>"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.go",
+        "function": "nested_function"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.java",
+        "function": "nested_function"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.java",
+        "function": "concat_function"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.js",
+        "function": "nested_function"
+      },
+      {
+        "label": "EXPENSIVE",
+        "file": "tests\\samples\\sample.kt",
+        "function": "<anonymous>"
+      }
+    ],
+    "risk_level": "HIGH",
+    "why_it_matters": "34 of 60 functions were flagged. The highest-priority hotspot right now is <anonymous>() in tests\\samples\\sample.c.",
+    "recommended_next_step": "Start with <anonymous>() in tests\\samples\\sample.c, then move through the remaining top flagged functions in priority order."
+  },
+  "files": [
+    {
+      "file": "tests\\samples\\sample.c",
+      "language": "c",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "<anonymous>",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 13,
+          "line_end": 20,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 22,
+          "line_end": 24,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 26,
+          "line_end": 31,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 33,
+          "line_end": 39,
+          "cost": {
+            "score": 35,
+            "label": "CRITICAL",
+            "dominant_severity": "HIGH",
+            "pattern_count": 9,
+            "top_pattern": {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 36,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CRITICAL"
+          },
+          "patterns": [
+            {
+              "name": "data_copy_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "Data is being copied on every loop iteration. Copying creates new memory allocations and increases the work the garbage collector must do.",
+              "suggestion": "Pass references or pointers where possible. Only copy when mutation is required.",
+              "label": null
+            },
+            {
+              "name": "data_copy_in_loop",
+              "severity": "MEDIUM",
+              "line": 36,
+              "explanation": "Data is being copied on every loop iteration. Copying creates new memory allocations and increases the work the garbage collector must do.",
+              "suggestion": "Pass references or pointers where possible. Only copy when mutation is required.",
+              "label": null
+            },
+            {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 36,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            },
+            {
+              "name": "deep_nesting",
+              "severity": "LOW",
+              "line": 36,
+              "explanation": "This code is nested 4 levels deep. Deep nesting hides performance problems and makes optimization harder.",
+              "suggestion": "Extract inner logic into separate named functions. Flat code is faster to read and easier to optimize.",
+              "label": null
+            },
+            {
+              "name": "data_copy_in_loop",
+              "severity": "MEDIUM",
+              "line": 36,
+              "explanation": "Data is being copied on every loop iteration. Copying creates new memory allocations and increases the work the garbage collector must do.",
+              "suggestion": "Pass references or pointers where possible. Only copy when mutation is required.",
+              "label": null
+            },
+            {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 36,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            },
+            {
+              "name": "deep_nesting",
+              "severity": "LOW",
+              "line": 36,
+              "explanation": "This code is nested 5 levels deep. Deep nesting hides performance problems and makes optimization harder.",
+              "suggestion": "Extract inner logic into separate named functions. Flat code is faster to read and easier to optimize.",
+              "label": null
+            },
+            {
+              "name": "data_copy_in_loop",
+              "severity": "MEDIUM",
+              "line": 36,
+              "explanation": "Data is being copied on every loop iteration. Copying creates new memory allocations and increases the work the garbage collector must do.",
+              "suggestion": "Pass references or pointers where possible. Only copy when mutation is required.",
+              "label": null
+            },
+            {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 36,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.c",
+        "language": "c",
+        "total_functions": 5,
+        "cheap": 2,
+        "moderate": 1,
+        "expensive": 1,
+        "critical": 1
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.cpp",
+      "language": "cpp",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "<anonymous>",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 13,
+          "line_end": 20,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 22,
+          "line_end": 24,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 26,
+          "line_end": 31,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 33,
+          "line_end": 39,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.cpp",
+        "language": "cpp",
+        "total_functions": 5,
+        "cheap": 3,
+        "moderate": 1,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.go",
+      "language": "go",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 3,
+          "line_end": 13,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 5,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 5,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 15,
+          "line_end": 21,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 18,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 18,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "clean_function",
+          "line_start": 23,
+          "line_end": 25,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 27,
+          "line_end": 32,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 31,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 31,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 34,
+          "line_end": 40,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 37,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 37,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.go",
+        "language": "go",
+        "total_functions": 5,
+        "cheap": 1,
+        "moderate": 3,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.java",
+      "language": "java",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 2,
+          "line_end": 12,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 4,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 4,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 14,
+          "line_end": 20,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "clean_function",
+          "line_start": 22,
+          "line_end": 24,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 26,
+          "line_end": 31,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 30,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 30,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 33,
+          "line_end": 39,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "HIGH",
+              "line": 36,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "HIGH",
+              "line": 36,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.java",
+        "language": "java",
+        "total_functions": 5,
+        "cheap": 2,
+        "moderate": 1,
+        "expensive": 2,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.js",
+      "language": "javascript",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 13,
+          "line_end": 19,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "clean_function",
+          "line_start": 21,
+          "line_end": 23,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 25,
+          "line_end": 30,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 32,
+          "line_end": 38,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.js",
+        "language": "javascript",
+        "total_functions": 5,
+        "cheap": 1,
+        "moderate": 3,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.kt",
+      "language": "kotlin",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "<anonymous>",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 13,
+          "line_end": 19,
+          "cost": {
+            "score": 15,
+            "label": "CRITICAL",
+            "dominant_severity": "CRITICAL",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "async_blocking_in_loop",
+              "severity": "CRITICAL",
+              "line": 16,
+              "explanation": "An async or concurrent operation is being created inside a loop. This either blocks the event loop on every iteration or spawns uncontrolled goroutines or threads.",
+              "suggestion": "Collect all async work first, then execute concurrently outside the loop using Promise.all, asyncio.gather, or equivalent for your language.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CRITICAL"
+          },
+          "patterns": [
+            {
+              "name": "async_blocking_in_loop",
+              "severity": "CRITICAL",
+              "line": 16,
+              "explanation": "An async or concurrent operation is being created inside a loop. This either blocks the event loop on every iteration or spawns uncontrolled goroutines or threads.",
+              "suggestion": "Collect all async work first, then execute concurrently outside the loop using Promise.all, asyncio.gather, or equivalent for your language.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 21,
+          "line_end": 23,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 25,
+          "line_end": 30,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "<anonymous>",
+          "line_start": 32,
+          "line_end": 38,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.kt",
+        "language": "kotlin",
+        "total_functions": 5,
+        "cheap": 3,
+        "moderate": 0,
+        "expensive": 1,
+        "critical": 1
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.php",
+      "language": "php",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 3,
+          "line_end": 13,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 5,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 5,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 15,
+          "line_end": 21,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "clean_function",
+          "line_start": 23,
+          "line_end": 25,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 27,
+          "line_end": 32,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 31,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 31,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 34,
+          "line_end": 40,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 37,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 37,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.php",
+        "language": "php",
+        "total_functions": 5,
+        "cheap": 2,
+        "moderate": 2,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.py",
+      "language": "python",
+      "parser": {
+        "backend": "python-ast",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via Python ast module."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 1,
+          "line_end": 7,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 10,
+          "line_end": 14,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 13,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 13,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "clean_function",
+          "line_start": 17,
+          "line_end": 18,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 21,
+          "line_end": 24,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 24,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 24,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 27,
+          "line_end": 31,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 30,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 30,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.py",
+        "language": "python",
+        "total_functions": 5,
+        "cheap": 1,
+        "moderate": 3,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.rb",
+      "language": "ruby",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 1,
+          "line_end": 9,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 11,
+          "line_end": 17,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "clean_function",
+          "line_start": 19,
+          "line_end": 21,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 23,
+          "line_end": 26,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "concat_function",
+          "line_start": 28,
+          "line_end": 34,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.rb",
+        "language": "ruby",
+        "total_functions": 5,
+        "cheap": 4,
+        "moderate": 0,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.rs",
+      "language": "rust",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 13,
+          "line_end": 19,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "clean_function",
+          "line_start": 21,
+          "line_end": 23,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 25,
+          "line_end": 30,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 32,
+          "line_end": 38,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.rs",
+        "language": "rust",
+        "total_functions": 5,
+        "cheap": 2,
+        "moderate": 2,
+        "expensive": 1,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.swift",
+      "language": "swift",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 13,
+          "line_end": 19,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "clean_function",
+          "line_start": 21,
+          "line_end": 23,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 25,
+          "line_end": 30,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 32,
+          "line_end": 38,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.swift",
+        "language": "swift",
+        "total_functions": 5,
+        "cheap": 4,
+        "moderate": 1,
+        "expensive": 0,
+        "critical": 0
+      },
+      "warnings": []
+    },
+    {
+      "file": "tests\\samples\\sample.ts",
+      "language": "typescript",
+      "parser": {
+        "backend": "tree-sitter-language-pack",
+        "quality": "native",
+        "degraded": false,
+        "note": "Native parser backend via tree-sitter-language-pack."
+      },
+      "functions": [
+        {
+          "name": "nested_function",
+          "line_start": 1,
+          "line_end": 11,
+          "cost": {
+            "score": 7,
+            "label": "EXPENSIVE",
+            "dominant_severity": "HIGH",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "EXPENSIVE"
+          },
+          "patterns": [
+            {
+              "name": "nested_loop",
+              "severity": "HIGH",
+              "line": 3,
+              "explanation": "Nested loop detected. Complexity is at minimum O(n\u00b2). Every full pass of the inner loop runs for each single iteration of the outer loop.",
+              "suggestion": "Consider flattening this logic, using hash maps for lookups instead of inner loops, or applying vectorized operations for numerical data.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "allocation_function",
+          "line_start": 13,
+          "line_end": 19,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "memory_allocation_in_loop",
+              "severity": "MEDIUM",
+              "line": 16,
+              "explanation": "Memory is being allocated on every iteration of this loop. Each allocation asks the system to find and reserve new space. This cost multiplies with every loop cycle.",
+              "suggestion": "Move the allocation outside the loop. Preallocate the full structure before the loop begins and fill it inside.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "clean_function",
+          "line_start": 21,
+          "line_end": 23,
+          "cost": {
+            "score": 0,
+            "label": "CHEAP",
+            "dominant_severity": "LOW",
+            "pattern_count": 0,
+            "top_pattern": null
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CHEAP"
+          },
+          "patterns": []
+        },
+        {
+          "name": "recursive_function",
+          "line_start": 25,
+          "line_end": 30,
+          "cost": {
+            "score": 18,
+            "label": "CRITICAL",
+            "dominant_severity": "HIGH",
+            "pattern_count": 4,
+            "top_pattern": {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 26,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "CRITICAL"
+          },
+          "patterns": [
+            {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 26,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            },
+            {
+              "name": "deep_nesting",
+              "severity": "LOW",
+              "line": 26,
+              "explanation": "This code is nested 4 levels deep. Deep nesting hides performance problems and makes optimization harder.",
+              "suggestion": "Extract inner logic into separate named functions. Flat code is faster to read and easier to optimize.",
+              "label": null
+            },
+            {
+              "name": "large_object_in_deep_loop",
+              "severity": "HIGH",
+              "line": 26,
+              "explanation": "An object is being created or copied at a deep nesting level. The cost of this operation multiplies by every outer loop it is inside.",
+              "suggestion": "Move object creation to the outermost possible scope. Reuse and mutate where your language allows.",
+              "label": null
+            },
+            {
+              "name": "recursion_without_memoization",
+              "severity": "MEDIUM",
+              "line": 29,
+              "explanation": "This function calls itself recursively. Without memoization, the same inputs may be computed multiple times, growing the call stack unnecessarily.",
+              "suggestion": "Add memoization using a cache dictionary or your language's built-in decorator. Store results of previous calls and return them directly on repeat inputs.",
+              "label": null
+            }
+          ]
+        },
+        {
+          "name": "concat_function",
+          "line_start": 32,
+          "line_end": 38,
+          "cost": {
+            "score": 3,
+            "label": "MODERATE",
+            "dominant_severity": "MEDIUM",
+            "pattern_count": 1,
+            "top_pattern": {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          },
+          "context": {
+            "is_hot_path": false,
+            "call_frequency": "unknown",
+            "context_note": "No strong usage context detected in this file.",
+            "urgency_modifier": "neutral",
+            "adjusted_label": "MODERATE"
+          },
+          "patterns": [
+            {
+              "name": "string_concatenation_in_loop",
+              "severity": "MEDIUM",
+              "line": 35,
+              "explanation": "String concatenation inside a loop creates a new string object on every iteration. Strings are immutable in most languages - this means new memory every cycle.",
+              "suggestion": "Use a string builder or join pattern. Collect parts in a list and join once outside the loop.",
+              "label": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "file": "tests\\samples\\sample.ts",
+        "language": "typescript",
+        "total_functions": 5,
+        "cheap": 1,
+        "moderate": 2,
+        "expensive": 1,
+        "critical": 1
+      },
+      "warnings": []
+    }
+  ]
+}

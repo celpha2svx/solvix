@@ -1,0 +1,44 @@
+=== Solvix/A Project Profile ===
+Primary profile   : general_application
+Secondary profiles: None
+Execution models  : library
+Surfaces          : Not inferred
+Confidence        : low
+Primary objectives: maintainability, efficiency, readability
+Secondary goals   : startup_time, memory_efficiency
+Primary languages : C, Cpp, Go
+Critical zones    : Not inferred yet
+Noise zones       : None detected
+Explanation       : Stage 1 profile classifies this repository as general application with confidence low. Primary language signals: C, Cpp, Go. Secondary profile signals: none. Execution models: library. Surfaces: not inferred. Detected markers: no strong framework markers. Likely noise zones: no obvious noise zones. Likely critical zones: no dominant critical zones inferred yet.
+
+=== Stage 1 Evidence ===
+Dependency markers: None
+Directory markers : None
+Entrypoints       : None
+Language markers  : C, Cpp, Go
+
+=== Solvix/A Project Summary ===
+Files analyzed    : 12
+Languages found   : C, Cpp, Go, Java, Javascript, Kotlin, Php, Python, Ruby, Rust, Swift, Typescript
+Total functions   : 60
+Clean functions   : 26
+Flagged functions : 34
+Risk level        : HIGH
+
+Why it matters:
+34 of 60 functions were flagged. The highest-priority hotspot right now is <anonymous>() in tests\samples\sample.c.
+
+Easiest next step:
+Start with <anonymous>() in tests\samples\sample.c, then move through the remaining top flagged functions in priority order.
+
+Top 10 Most Expensive Functions:
+1. CRITICAL  tests\samples\sample.c -> <anonymous>()
+2. CRITICAL  tests\samples\sample.kt -> <anonymous>()
+3. CRITICAL  tests\samples\sample.ts -> recursive_function()
+4. EXPENSIVE  tests\samples\sample.c -> <anonymous>()
+5. EXPENSIVE  tests\samples\sample.cpp -> <anonymous>()
+6. EXPENSIVE  tests\samples\sample.go -> nested_function()
+7. EXPENSIVE  tests\samples\sample.java -> nested_function()
+8. EXPENSIVE  tests\samples\sample.java -> concat_function()
+9. EXPENSIVE  tests\samples\sample.js -> nested_function()
+10. EXPENSIVE  tests\samples\sample.kt -> <anonymous>()

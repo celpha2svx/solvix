@@ -2,6 +2,31 @@
 
 This guide shows how to publish Solvix to PyPI so users can later run `pip install solvix`.
 
+For release-order discipline and version alignment policy, also read:
+
+- [docs/RELEASE_OPERATIONS.md](/C:/Users/Adminn/Solvix/docs/RELEASE_OPERATIONS.md)
+- [docs/WINGET_READINESS.md](/C:/Users/Adminn/Solvix/docs/WINGET_READINESS.md)
+- [docs/SMOKE_TESTS.md](/C:/Users/Adminn/Solvix/docs/SMOKE_TESTS.md)
+
+## Canonical Release Order
+
+Always follow this order:
+
+1. update version in every version-bearing file
+2. verify `solvix --version`
+3. run tests
+4. commit and push `main`
+5. create and push tag `v0.X.Y`
+6. wait for PyPI and release-binary workflows
+7. verify release assets
+8. publish npm for the exact same version
+9. update Homebrew tap
+10. smoke-test install and update paths
+
+Do not tag first and edit later.
+Do not publish npm before the matching GitHub release exists.
+Do not announce a release until version surfaces agree.
+
 ## Prerequisites
 
 1. Create a PyPI account at [pypi.org](https://pypi.org).
@@ -160,6 +185,7 @@ The binary release workflow now also publishes:
 - `solvix-checksums.txt`
 - `install.sh`
 - `solvix.rb` for Homebrew tap usage
+- winget portable zips and generated manifest YAML files
 
 These are generated automatically from the same release binaries, so npm, curl install, and Homebrew all track one artifact set.
 
@@ -172,8 +198,41 @@ curl -fsSL https://github.com/celpha2svx/solvix/releases/latest/download/install
 You can pin a version with:
 
 ```bash
-curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.2.7/install.sh | SOLVIX_VERSION=v0.2.7 sh
+curl -fsSL https://github.com/celpha2svx/solvix/releases/download/v0.3.0/install.sh | SOLVIX_VERSION=v0.3.0 sh
 ```
+
+## Prepare winget publication
+
+Solvix uses `Solvix.Solvix` as the exact winget package identifier.
+
+The first winget manifest should be portable-first rather than installer-first. The release workflow creates a winget-specific zip containing `solvix.exe`, so Windows users get a stable `solvix` command alias through winget.
+
+Generated release assets:
+
+```text
+solvix-windows-x64-portable.zip
+solvix-windows-x64-portable.zip.sha256
+winget/manifests/s/Solvix/Solvix/<version>/*.yaml
+```
+
+To generate locally from downloaded release binaries:
+
+```powershell
+py -3 scripts/generate_winget_assets.py --asset-dir dist/release-assets --output-dir dist/release-metadata
+py -3 scripts/generate_winget_manifest.py --version v0.X.Y --repo celpha2svx/solvix --asset-dir dist/release-metadata --output-dir dist/release-metadata/winget
+```
+
+Validate on Windows before opening a PR to `microsoft/winget-pkgs`:
+
+```powershell
+winget validate dist\release-metadata\winget\manifests\s\Solvix\Solvix\0.X.Y
+winget install --manifest dist\release-metadata\winget\manifests\s\Solvix\Solvix\0.X.Y
+solvix --version
+solvix doctor
+winget uninstall Solvix.Solvix
+```
+
+Use [docs/WINGET_READINESS.md](/C:/Users/Adminn/Solvix/docs/WINGET_READINESS.md) for the full publication policy.
 
 ## Publish to Homebrew
 
@@ -227,8 +286,8 @@ The workflow in `.github/workflows/publish.yml` publishes automatically when a v
 Example tag:
 
 ```bash
-git tag v0.2.7
-git push origin v0.2.7
+git tag v0.3.0
+git push origin v0.3.0
 ```
 
 Before using the workflows:
@@ -239,15 +298,20 @@ Before using the workflows:
 
 ## Release checklist
 
-1. Update version numbers.
-2. Run the test suite.
-3. Run `solvix doctor`.
-4. Build with `python -m build`.
-5. Check with `python -m twine check dist/*`.
-6. Publish to TestPyPI.
-7. Smoke-test installation from TestPyPI.
-8. Push the release tag.
-9. Wait for PyPI and release binary workflows to finish.
-10. Publish npm.
-11. Smoke-test `npm install -g @celpha2svx/solvix`.
-12. Smoke-test `curl -fsSL .../install.sh | sh`.
+1. Update version numbers in all version-bearing files.
+2. Verify `solvix --version`.
+3. Run the test suite.
+4. Run `solvix doctor`.
+5. Build with `python -m build`.
+6. Check with `python -m twine check dist/*`.
+7. Publish to TestPyPI.
+8. Smoke-test installation from TestPyPI.
+9. Commit and push `main`.
+10. Push the release tag.
+11. Wait for PyPI and release binary workflows to finish.
+12. Verify release assets match the same version.
+13. Publish npm.
+14. Update the Homebrew tap.
+15. Smoke-test `npm install -g @celpha2svx/solvix`.
+16. Smoke-test `curl -fsSL .../install.sh | sh`.
+17. Smoke-test winget manifests with `winget validate` and `winget install --manifest` when publishing Windows package updates.

@@ -1,0 +1,25 @@
+=== Solvix/A Project Summary ===
+Files analyzed    : 12
+Languages found   : C, Cpp, Go, Java, Javascript, Kotlin, Php, Python, Ruby, Rust, Swift, Typescript
+Total functions   : 60
+Clean functions   : 26
+Flagged functions : 34
+Risk level        : HIGH
+
+Why it matters:
+34 of 60 functions were flagged. The highest-priority hotspot right now is <anonymous>() in tests\samples\sample.c.
+
+Easiest next step:
+Start with <anonymous>() in tests\samples\sample.c, then move through the remaining top flagged functions in priority order.
+
+Top 10 Most Expensive Functions:
+1. CRITICAL  tests\samples\sample.c -> <anonymous>()
+2. CRITICAL  tests\samples\sample.kt -> <anonymous>()
+3. CRITICAL  tests\samples\sample.ts -> recursive_function()
+4. EXPENSIVE  tests\samples\sample.c -> <anonymous>()
+5. EXPENSIVE  tests\samples\sample.cpp -> <anonymous>()
+6. EXPENSIVE  tests\samples\sample.go -> nested_function()
+7. EXPENSIVE  tests\samples\sample.java -> nested_function()
+8. EXPENSIVE  tests\samples\sample.java -> concat_function()
+9. EXPENSIVE  tests\samples\sample.js -> nested_function()
+10. EXPENSIVE  tests\samples\sample.kt -> <anonymous>()

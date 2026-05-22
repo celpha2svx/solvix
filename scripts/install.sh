@@ -5,6 +5,10 @@ REPO="celpha2svx/solvix"
 VERSION="${SOLVIX_VERSION:-latest}"
 INSTALL_DIR="${SOLVIX_INSTALL_DIR:-$HOME/.local/bin}"
 
+status() {
+  echo "Solvix: $1" >&2
+}
+
 resolve_version() {
   if [ "$VERSION" != "latest" ]; then
     printf '%s' "$VERSION"
@@ -17,6 +21,7 @@ resolve_version() {
 }
 
 detect_asset() {
+  status "detecting platform"
   os="$(uname -s)"
   arch="$(uname -m)"
 
@@ -38,6 +43,7 @@ detect_asset() {
       ;;
   esac
 
+  status "selected $platform/$cpu release asset"
   printf 'solvix-%s-%s' "$platform" "$cpu"
 }
 
@@ -62,6 +68,7 @@ verify_sha256() {
   fi
 }
 
+status "locating release version"
 TAG="$(resolve_version)"
 if [ -z "$TAG" ]; then
   echo "Could not resolve the latest Solvix release tag." >&2
@@ -76,17 +83,21 @@ trap 'rm -rf "$TMP_DIR"' EXIT INT TERM
 BINARY_PATH="$TMP_DIR/$ASSET"
 CHECKSUM_PATH="$TMP_DIR/$ASSET.sha256"
 
+status "downloading $ASSET from $TAG"
 curl -fsSL "$BASE_URL/$ASSET" -o "$BINARY_PATH"
+status "downloading checksum"
 curl -fsSL "$BASE_URL/$ASSET.sha256" -o "$CHECKSUM_PATH"
 
 EXPECTED_SHA="$(awk '{print $1}' "$CHECKSUM_PATH")"
+status "verifying checksum"
 verify_sha256 "$BINARY_PATH" "$EXPECTED_SHA"
 
+status "installing or updating $INSTALL_DIR/solvix"
 mkdir -p "$INSTALL_DIR"
 cp "$BINARY_PATH" "$INSTALL_DIR/solvix"
 chmod +x "$INSTALL_DIR/solvix"
 
-echo "Solvix installed to $INSTALL_DIR/solvix"
+status "done - installed to $INSTALL_DIR/solvix"
 case ":$PATH:" in
   *":$INSTALL_DIR:"*) ;;
   *)

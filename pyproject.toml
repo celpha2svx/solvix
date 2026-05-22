@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "solvix"
-version = "0.2.7"
+version = "0.3.0"
 description = "Computational intelligence layer for developers"
 readme = "README.md"
 requires-python = ">=3.10"
